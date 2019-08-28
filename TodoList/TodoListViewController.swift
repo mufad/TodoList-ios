@@ -11,9 +11,16 @@ import UIKit
 class TodoListViewController: UITableViewController {
 
     var itemArray = ["War", "Peace", "Love"]
+    var userDefaults = UserDefaults.standard
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+
+        if let items = userDefaults.array(forKey: "data") as? [String] {
+            itemArray = items
+            self.tableView.reloadData()
+        }
     }
 
 
@@ -34,7 +41,6 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print(itemArray[indexPath.row])
         
-        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -48,6 +54,7 @@ class TodoListViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             self.itemArray.append(textField.text!)
+            self.userDefaults.set(self.itemArray, forKey: "data")
             self.tableView.reloadData()
         }
         
